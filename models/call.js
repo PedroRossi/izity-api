@@ -20,6 +20,14 @@ const callSchema = new Schema({
     end: {
         type: Date,
         required: true
+    },
+    caller: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
+    callee: {
+        type: Schema.Types.ObjectId,
+        required: true
     }
 })
 

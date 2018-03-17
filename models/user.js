@@ -12,6 +12,10 @@ const userSchema = new Schema({
     voiceprintId: {
         type: String,
         required: true
+    },
+    trained: {
+        type: Boolean,
+        default: false
     }
 })
 
