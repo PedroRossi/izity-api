@@ -2,14 +2,14 @@ import request from 'request-promise'
 
 const baseUrl = 'https://api.voicepin.com'
 const basePath = '/rest/v1/verifier'
-const apiKey = process.env.VOICEPIN_API_KEY || '556de5b4-f91a-4caa-84e2-afeb96254427'
+const apiKey = process.env.VOICEPIN_API_KEY
 const headers = {
     'Content-Type': 'application/json'
 }
 const uploadHeaders = {
     'Content-Type': 'multipart/form-data'
 }
-const passwordGroupName = process.env.VOICEPIN_PASSWORDGROUPNAME || 'minha-voz-confirma-o-meu-acesso'
+const passwordGroupName = process.env.VOICEPIN_PASSWORDGROUPNAME
 
 class VoicePIN {
 
