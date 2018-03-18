@@ -1,7 +1,8 @@
 import { Router } from 'express'
+import { Readable } from 'stream'
+import multer from 'multer'
 import { Call, User } from '../models'
 import { Watson } from '../middlewares'
-import multer from 'multer'
 
 const router = Router()
 
@@ -20,6 +21,20 @@ router.get('/:id', (req, res) => {
         .populate('caller')
         .populate('callee')
         .then(call => res.status(200).json(call))
+        .catch(err => res.status(500).json(err))
+})
+
+router.get('/:id/audio', (req, res) => {
+    Call.findById(req.params.id)
+        .then(call => {
+            const readable = new Readable()
+            readable._read = () => {} // _read is required but you can noop it
+            readable.push(call.audio)
+            readable.push(null)
+            res.setHeader('Content-Type', 'audio/wav')
+            res.setHeader('Content-Length', call.audio.byteLength)
+            readable.pipe(res)
+        })
         .catch(err => res.status(500).json(err))
 })
 
