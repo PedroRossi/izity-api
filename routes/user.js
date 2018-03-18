@@ -60,7 +60,10 @@ router.post('/:id/train', (req, res) => {
                 return user.save()
             })
             .then(() => res.status(200).json(trainResponse))
-            .catch(err => res.status(500).json(err))
+            .catch(err => {
+                console.log(err)
+                res.status(500).json(err)
+            })
     })
 })
 

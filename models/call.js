@@ -23,11 +23,11 @@ const callSchema = new Schema({
     },
     caller: {
         type: Schema.Types.ObjectId,
-        required: true
+        // required: true
     },
     callee: {
         type: Schema.Types.ObjectId,
-        required: true
+        // required: true
     }
 })
 

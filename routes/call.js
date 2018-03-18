@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { Call, User } from '../models'
-import { VoicePIN } from '../middlewares'
+import { Watson } from '../middlewares'
+import multer from 'multer'
 
 const router = Router()
 
@@ -21,7 +22,42 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-
+    const storage = multer.memoryStorage()
+    const uploader = multer({
+        storage: storage,
+        fileSize: 1024*1024,
+        fileFilter: (req, file, cb) => {
+            cb(null, file.mimetype === "audio/wave" || file.mimetype === "audio/wav")
+        }
+    }).single('record')
+    uploader(req, res, (err) => {
+        const record = req.file.buffer
+        Watson.recognize(record)
+            .then(data => {
+                let text = ''
+                data.results.forEach(r => {
+                    r.alternatives.forEach(obj => {
+                        text += obj.transcript
+                    })
+                })
+                const call = new Call({
+                    audio: record,
+                    text: text,
+                    start: req.body.start,
+                    end: req.body.end
+                })
+                return call.save()
+            })
+            .then(call => {
+                let obj = call.toObject()
+                delete obj["audio"]
+                res.status(201).json(obj)
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json(err)
+            })
+    })
 })
 
 export const CallRouter = router
