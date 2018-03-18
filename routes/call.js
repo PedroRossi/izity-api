@@ -7,7 +7,10 @@ import { Watson } from '../middlewares'
 const router = Router()
 
 router.get('/', (req, res) => {
-    Call.find()
+    let query = {}
+    if (req.query.text)
+        query.text = {$regex: req.query.text, $options: 'i'}
+    Call.find(query)
         .select('-audio')
         .populate('caller')
         .populate('callee')
