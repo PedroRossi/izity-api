@@ -7,6 +7,7 @@ const router = Router()
 
 router.get('/', (req, res) => {
     Call.find()
+        .select('-audio')
         .populate('caller')
         .populate('callee')
         .then(calls => res.status(200).json(calls))
@@ -15,6 +16,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     Call.findById(req.params.id)
+        .select('-audio')
         .populate('caller')
         .populate('callee')
         .then(call => res.status(200).json(call))
