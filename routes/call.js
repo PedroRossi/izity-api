@@ -41,6 +41,7 @@ router.post('/', (req, res) => {
                     })
                 })
                 const call = new Call({
+                    authorized: req.body.authorized,
                     audio: record,
                     text: text,
                     start: req.body.start,
