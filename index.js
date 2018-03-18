@@ -10,6 +10,7 @@ const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/izity'
 mongoose.connect(mongoUri)
 const app = express()
 
+app.use(cors())
 app.use(bodyParser.json())
 
 app.use('/calls', CallRouter)
